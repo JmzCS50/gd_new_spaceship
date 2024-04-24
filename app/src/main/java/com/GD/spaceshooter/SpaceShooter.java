@@ -1,4 +1,4 @@
-package com.sandipbhattacharya.spaceshooter;
+package com.GD.spaceshooter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -40,11 +40,9 @@ public class SpaceShooter extends View {
     ArrayList<Explosion> explosions;
     boolean enemyShotAction = false;
 
-    int rockDropFrequency = 200; // Initial frequency for dropping rocks.
     int lastDropScore = 0; // Track the score at the last drop to calculate the interval.
 
 
-    int rockSpeed = 15; // Initial rock speed
     final Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -149,25 +147,6 @@ public class SpaceShooter extends View {
                 enemyShotAction = false;
             }
         }
-        // Draw our spaceship shots towards the enemy. If there is a collision between our shot and enemy
-        // spaceship, increment points, remove the shot from ourShots and create a new Explosion object.
-        // Else if, our shot goes away through the top edge of the screen also remove
-        // the shot object from enemyShots ArrayList.
-        for(int i=0; i < ourShots.size(); i++){
-            ourShots.get(i).shy -= 15;
-            canvas.drawBitmap(ourShots.get(i).getShot(), ourShots.get(i).shx, ourShots.get(i).shy, null);
-            if((ourShots.get(i).shx >= enemySpaceship.ex)
-               && ourShots.get(i).shx <= enemySpaceship.ex + enemySpaceship.getEnemySpaceshipWidth()
-               && ourShots.get(i).shy <= enemySpaceship.getEnemySpaceshipWidth()
-               && ourShots.get(i).shy >= enemySpaceship.ey){
-                points++;
-                ourShots.remove(i);
-                explosion = new Explosion(context, enemySpaceship.ex, enemySpaceship.ey);
-                explosions.add(explosion);
-            }else if(ourShots.get(i).shy <=0){
-                ourShots.remove(i);
-            }
-        }
         // Do the explosion
         for(int i=0; i < explosions.size(); i++){
             canvas.drawBitmap(explosions.get(i).getExplosion(explosions.get(i).explosionFrame), explosions.get(i).eX, explosions.get(i).eY, null);
@@ -176,9 +155,7 @@ public class SpaceShooter extends View {
                 explosions.remove(i);
             }
         }
-        // If not paused, we’ll call the postDelayed() method on handler object which will cause the
-        // run method inside Runnable to be executed after 30 milliseconds, that is the value inside
-        // UPDATE_MILLIS.
+
         if(!paused)
             handler.postDelayed(runnable, UPDATE_MILLIS);
     }
@@ -186,15 +163,7 @@ public class SpaceShooter extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int touchX = (int)event.getX();
-        // When event.getAction() is MotionEvent.ACTION_UP, if ourShots arraylist size < 1,
-        // create a new Shot.
-        // This way we restrict ourselves of making just one shot at a time, on the screen.
-        if(event.getAction() == MotionEvent.ACTION_UP){
-            if(ourShots.size() < 1){
-                Shot ourShot = new Shot(context, ourSpaceship.ox + ourSpaceship.getOurSpaceshipWidth() / 2, ourSpaceship.oy);
-                ourShots.add(ourShot);
-            }
-        }
+
         // When event.getAction() is MotionEvent.ACTION_DOWN, control ourSpaceship
         if(event.getAction() == MotionEvent.ACTION_DOWN){
             ourSpaceship.ox = touchX;

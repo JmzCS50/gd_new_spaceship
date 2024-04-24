@@ -1,4 +1,4 @@
-package com.sandipbhattacharya.spaceshooter;
+package com.GD.spaceshooter;
 
 import android.content.Context;
 import android.graphics.Bitmap;

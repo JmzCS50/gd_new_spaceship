@@ -1,8 +1,11 @@
-package com.sandipbhattacharya.spaceshooter;
+package com.GD.spaceshooter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+
+
 import java.util.Random;
 
 public class EnemySpaceship {

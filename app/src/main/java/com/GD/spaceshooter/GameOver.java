@@ -1,4 +1,4 @@
-package com.sandipbhattacharya.spaceshooter;
+package com.GD.spaceshooter;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ public class GameOver extends AppCompatActivity {
         setContentView(R.layout.game_over);
         int points = getIntent().getExtras().getInt("points");
         tvPoints = findViewById(R.id.tvPoints);
-        tvPoints.setText("" + points);
+        tvPoints.setText(String.valueOf(points));
     }
 
     public void restart(View view) {

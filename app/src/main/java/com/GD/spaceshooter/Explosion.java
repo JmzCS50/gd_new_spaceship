@@ -1,11 +1,11 @@
-package com.sandipbhattacharya.spaceshooter;
+package com.GD.spaceshooter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class Explosion {
-    Bitmap explosion[] = new Bitmap[9];
+    Bitmap[] explosion = new Bitmap[9];
     int explosionFrame;
     int eX, eY;
 
