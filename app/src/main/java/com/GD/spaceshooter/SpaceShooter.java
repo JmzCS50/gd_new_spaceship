@@ -13,11 +13,16 @@ import android.os.Handler;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class SpaceShooter extends View {
+public class SpaceShooter extends View implements SensorEventListener{
     Context context;
     Bitmap background, lifeImage;
     Handler handler;
@@ -41,6 +46,10 @@ public class SpaceShooter extends View {
     boolean enemyShotAction = false;
 
     int lastDropScore = 0; // Track the score at the last drop to calculate the interval.
+
+    //sensors for moving the ship based on tilting of the phone
+    SensorManager sensorManager;
+    Sensor accelerometer;
 
 
     final Runnable runnable = new Runnable() {
@@ -74,6 +83,10 @@ public class SpaceShooter extends View {
         scorePaint.setTextAlign(Paint.Align.LEFT);
         enemySpaceships.add(new EnemySpaceship(context)); // Adds the initial enemy spaceship
 
+        sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
+
     }
 
     @Override
@@ -86,7 +99,7 @@ public class SpaceShooter extends View {
         }
         // When life becomes 0, stop game and launch GameOver Activity with points
         if(life == 0){
-            paused = true;
+//            paused = true;
             handler = null;
             Intent intent = new Intent(context, GameOver.class);
             intent.putExtra("points", points);
@@ -123,7 +136,7 @@ public class SpaceShooter extends View {
         // Draw our Spaceship
         canvas.drawBitmap(ourSpaceship.getOurSpaceship(), ourSpaceship.ox, ourSpaceship.oy, null);
         // Draw the enemy rock downwards our spaceship and if it's being hit, decrement life, remove
-        // the shot object from enemyShots ArrayList and show an explosion.
+        // the rock object from enemyShots ArrayList and show an explosion.
         // Else if, it goes away through the bottom edge of the screen also remove
         // the shot object from enemyShots.
         // When there is no enemyShots no the screen, change enemyShotAction to false, so that enemy
@@ -176,5 +189,39 @@ public class SpaceShooter extends View {
         // Returning true in an onTouchEvent() tells Android system that you already handled
         // the touch event and no further handling is required.
         return true;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            // In landscape mode, use event.values[1] to detect tilt left/right
+            float tilt = event.values[1];  // Y-axis value, which corresponds to left/right tilt in landscape
+            updateSpaceshipPosition(tilt);
+        }
+    }
+
+    private void updateSpaceshipPosition(float tilt) {
+        // Adjusting the spaceship's horizontal position based on the tilt
+        // Multiply by a factor to control sensitivity and direction
+        ourSpaceship.ox += tilt * 2; // Adjust the factor '2' to increase or decrease sensitivity
+
+        // Make sure the spaceship stays within the screen bounds
+        ourSpaceship.ox = Math.max(0, Math.min(ourSpaceship.ox, screenWidth - ourSpaceship.getOurSpaceshipWidth()));
+
+        // Request to redraw the view
+        invalidate();
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // Not needed but must be implemented
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (sensorManager != null) {
+            sensorManager.unregisterListener(this);
+        }
     }
 }
