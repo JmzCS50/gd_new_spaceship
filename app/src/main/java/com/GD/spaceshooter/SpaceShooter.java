@@ -1,3 +1,13 @@
+/**
+ * This is Team09's final project for the University of Oklahoma, 2024 Computer Graphics class.
+ * Authors: Jacob Maslovskiy and Zain Chaudhry
+ * Version: 1.0
+ *
+ * The SpaceShooter class provides a space shooter game view where players control a spaceship
+ * to dodge and destroy incoming enemy ships and rocks. This class manages game elements like
+ * spaceship movement, firing, enemy generation, and collision detection.
+ */
+
 package com.GD.spaceshooter;
 
 import android.app.Activity;
@@ -24,7 +34,7 @@ import java.util.Random;
 
 public class SpaceShooter extends View implements SensorEventListener{
     Context context;
-    Bitmap background, lifeImage;
+    Bitmap background, lifeImage, pause_button;
     Handler handler;
     long UPDATE_MILLIS = 30;
     static int screenWidth, screenHeight;
@@ -76,6 +86,7 @@ public class SpaceShooter extends View implements SensorEventListener{
         enemySpaceship = new EnemySpaceship(context);
         handler = new Handler();
         background = BitmapFactory.decodeResource(context.getResources(), R.drawable.background2);
+        pause_button = BitmapFactory.decodeResource(context.getResources(), R.drawable.pause_button);
         lifeImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.life);
         scorePaint = new Paint();
         scorePaint.setColor(Color.parseColor("#89CFF0"));
@@ -93,6 +104,8 @@ public class SpaceShooter extends View implements SensorEventListener{
     protected void onDraw(Canvas canvas) {
         // Draw background, Points and life on Canvas
         canvas.drawBitmap(background, 0, 0, null);
+        canvas.drawBitmap(pause_button, screenWidth - pause_button.getWidth() - 20, 20, null);
+
         canvas.drawText("Pt: " + points, 0, TEXT_SIZE, scorePaint);
         for(int i=life; i>=1; i--){
             canvas.drawBitmap(lifeImage, screenWidth - lifeImage.getWidth() * i, 0, null);

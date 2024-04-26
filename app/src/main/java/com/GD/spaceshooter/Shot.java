@@ -1,3 +1,13 @@
+/**
+ * This is Team09's final project for the University of Oklahoma, 2024 Computer graphics class.
+ * Authors: Jacob Maslovskiy and Zain Chaudhry
+ * Version: 1.0*
+ *
+ * Represents an enemy rock in the Space Shooter game.
+ * This class encapsulates the properties and functionalities of a rock,
+ * including its bitmap representation, position, and dimensions.
+ */
+
 package com.GD.spaceshooter;
 
 import android.content.Context;

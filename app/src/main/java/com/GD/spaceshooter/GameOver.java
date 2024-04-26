@@ -1,5 +1,13 @@
 package com.GD.spaceshooter;
-
+/**
+ * This is Team09's final project for the University of Oklahoma, 2024 Computer Graphics class.
+ * Authors: Jacob Maslovskiy and Zain Chaudhry
+ * Version: 1.0
+ *
+ * The SpaceShooter class provides a space shooter game view where players control a spaceship
+ * to dodge and destroy incoming enemy ships and rocks. This class manages game elements like
+ * spaceship movement, firing, enemy generation, and collision detection.
+ */
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;

@@ -1,3 +1,13 @@
+/**
+ * This is Team09's final project for the University of Oklahoma, 2024 Computer Graphics class.
+ * Authors: Jacob Maslovskiy and Zain Chaudhry
+ * Version: 1.0
+ *
+ * Represents an explosion animation in the Space Shooter game.
+ * This class manages an array of bitmaps that together animate an explosion,
+ * typically triggered when a spaceship or enemy is destroyed.
+ * */
+
 package com.GD.spaceshooter;
 
 import android.content.Context;
